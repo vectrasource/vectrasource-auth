@@ -1,0 +1,9 @@
+{
+  "name": "vectrasource-auth",
+  "version": "1.0.0",
+  "description": "Vectrasource subscription auth API",
+  "dependencies": {
+    "mongodb": "^6.3.0",
+    "resend": "^3.2.0"
+  }
+}
