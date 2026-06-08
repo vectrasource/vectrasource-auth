@@ -19,7 +19,8 @@ const PLAN_ACCESS = {
   'vlogsource': ['vlogsource', 'suite'],
   'ledgerai':   ['ledgerai', 'suite'],
   'vakeel':     ['vakeel', 'suite'],
-  'suite':      ['tutorai', 'vlogsource', 'ledgerai', 'vakeel', 'suite'],
+  'taxdraftai': ['taxdraftai', 'suite'],
+  'suite':      ['tutorai', 'vlogsource', 'ledgerai', 'vakeel', 'taxdraftai', 'suite'],
 };
 
 export default async function handler(req, res) {
