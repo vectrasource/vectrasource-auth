@@ -1,11 +1,4 @@
 // api/webhook.js
-// Handles ALL Razorpay Subscription webhook events
-// Events handled:
-//   subscription.activated  → issue token (first payment)
-//   subscription.charged    → extend token by 1 month (renewal)
-//   subscription.cancelled  → deactivate token
-//   subscription.halted     → deactivate token (payment failed repeatedly)
-
 import { MongoClient } from 'mongodb';
 import crypto from 'crypto';
 
@@ -188,13 +181,13 @@ export default async function handler(req, res) {
   const signature = req.headers['x-razorpay-signature'];
   const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
 
- // TEMPORARY - signature check disabled for testing
-// if (webhookSecret && signature) {
-//   const rawBody = JSON.stringify(req.body);
-//   if (!verifySignature(rawBody, signature, webhookSecret)) {
-//     return res.status(400).json({ error: 'Invalid signature' });
-//   }
-// }
+  // TEMPORARY - signature check disabled for testing
+  // if (webhookSecret && signature) {
+  //   const rawBody = JSON.stringify(req.body);
+  //   if (!verifySignature(rawBody, signature, webhookSecret)) {
+  //     return res.status(400).json({ error: 'Invalid signature' });
+  //   }
+  // }
 
   const event = req.body;
   const eventType = event.event;
@@ -210,7 +203,15 @@ export default async function handler(req, res) {
       const sub = event.payload?.subscription?.entity;
       const payment = event.payload?.payment?.entity;
 
-      const email = payment?.email || sub?.notes?.email;
+      console.log('Sub entity:', JSON.stringify(sub));
+      console.log('Payment entity:', JSON.stringify(payment));
+
+      const email = payment?.email
+        || sub?.notes?.email
+        || sub?.customer_id;
+
+      console.log('Email extracted:', email);
+
       const razorpaySubId = sub?.id;
       const razorpayPlanId = sub?.plan_id;
       const plan = RAZORPAY_PLAN_MAP[razorpayPlanId] || 'vlogsource';
